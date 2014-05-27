@@ -5,7 +5,7 @@ date: 2014-05-24 19:21
 draft: true
 ---
 ![tic-tac-toe](/images/tic-tac-toe.jpg)
-Here is a small game [tic-tac-toe](/tic-tac-toe) written by myself, check [the repositor](https://github.com/Min-Guo/TicTacToe).
+Here is a small game [tic-tac-toe](/tic-tac-toe) written by myself, check [the repository](https://github.com/Min-Guo/TicTacToe).
 
 ---
 ### Basic coding steps:
