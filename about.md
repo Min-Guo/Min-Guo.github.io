@@ -12,6 +12,6 @@ I am very interested in data analysis and machine learning related stuff since I
 
 Now I am learning Python, Machine Learning and Algorithms on coursera. I also learn JavaScript by myself, and I wrote my first small game <a href='http://min-guo.com/tic-tac-toe/' target='_blank'>Tic-Tac_Toe</a> in JavaScript. 
 
-Read my code on <a href='https://github.com/Min-Guo' target='_blank'>Github</a>, tweet me <a href='https://twitter.com/_Min_Guo' target='_blank'>@_Min_Guo</a>, and find me on <a href='https://www.linkedin.com/pub/min-guo/7b/8ba/79a' target='_blank'>LinkedIn</a>.
+Read my code on <a href='https://github.com/Min-Guo' target='_blank'>Github</a>, tweet me <a href='https://twitter.com/_Min_Guo' target='_blank'>@_Min_Guo</a>, and find me on <a href='www.linkedin.com/in/minguo1/' target='_blank'>LinkedIn</a>.
 
 
