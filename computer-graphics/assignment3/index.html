@@ -29,49 +29,69 @@
 
    // Compute intersection of a ray with a sphere, if any.  Return t.
    // If there is no intersection, return 10000.
-
-   float raySphere(vec3 V, vec3 W, vec4 S) {
-
-      // YOU NEED TO COMPUTE t, BY SETTING UP AND THEN SOLVING A QUADRATIC EQUATION.
-
-      return 10000.;
-   }
-
-   // Diffusely shade a sphere.
-   //    point is the x,y,z position of the surface point.
-   //    sphere is the x,y,z,r definition of the sphere.
-   //    material is the r,g,b color of the sphere.
-
-   vec3 shadeSphere(vec3 point, vec4 sphere, vec3 material) {
-      vec3 color = vec3(0.,0.,0.);
-
-      // YOU NEED TO COMPUTE COLOR FOR A DIFFUSELY SHADED SPHERE.
-
-      // FOR THE AMBIENT COMPONENT OF THE DIFFUSE SHADING, YOU CAN
-      // USE A SIMPLE APPROXIMATION SUCH AS: ambient = material / 5.;
-
-      return color;
-   }
+   //
+  //  float raySphere(vec3 V, vec3 W, vec4 S) {
+   //
+  //     // YOU NEED TO COMPUTE t, BY SETTING UP AND THEN SOLVING A QUADRATIC EQUATION.
+  //     delta = pow(dot(2. * W, (V - C)), 2.) - 4. * dot(W, W) * dot((V - C), (V - C));
+  //     xPosition = - dot(W, (V - C)) / dot(W, W);
+  //     t1 = xPosition - sqrt(delta) / (2. * dot(W, W));
+  //     t2 = xPosition + sqrt(delta) / (2. * dot(W, W));
+  //     if (delta === 0.) {
+  //       t = xPosition;
+  //       return t;
+  //     }
+  //     if (delta > 0. && t1 < 0. && t2 > 0. ) {
+  //       t = t2;
+  //       return t;
+  //     }
+  //     if (delta > 0. && t1 > 0.) {
+  //       t = t1;
+  //       return t;
+  //     }
+  //     else {
+  //       return 10000.;
+  //     }
+  //  }
+   //
+  //  // Diffusely shade a sphere.
+  //  //    point is the x,y,z position of the surface point.
+  //  //    sphere is the x,y,z,r definition of the sphere.
+  //  //    material is the r,g,b color of the sphere.
+   //
+  //  vec3 shadeSphere(vec3 point, vec4 sphere, vec3 material) {
+  //     vec3 color = vec3(0.,0.,0.);
+   //
+  //     // YOU NEED TO COMPUTE COLOR FOR A DIFFUSELY SHADED SPHERE.
+   //
+  //     // FOR THE AMBIENT COMPONENT OF THE DIFFUSE SHADING, YOU CAN
+  //     // USE A SIMPLE APPROXIMATION SUCH AS: ambient = material / 5.;
+   //
+  //     return color;
+  //  }
 
    void main(void) {
-      vec2 c = uCursor.xy;
+      // vec2 c = uCursor.xy;
+      //
+      // Lrgb = vec3(1.,.5,0.);
+      // Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
+      //
+      // // YOU NEED TO COMPUTE V AND W TO CREATE THE RAY FOR THIS PIXEL,
+      // // USING vPosition.x AND vPosition.y.
+      //
+      // vec3 V, W;
+      //
+      // // YOU NEED TO SET x,y,z AND r FOR sphere.
+      //
+      // // YOU NEED TO SET r,g,b FOR material.
 
-      Lrgb = vec3(1.,.5,0.);
-      Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
-
-      // YOU NEED TO COMPUTE V AND W TO CREATE THE RAY FOR THIS PIXEL,
-      // USING vPosition.x AND vPosition.y.
-
-      vec3 V, W;
-
-      // YOU NEED TO SET x,y,z AND r FOR sphere.
-
-      // YOU NEED TO SET r,g,b FOR material.
-
-      vec3 color = vec3(0., 0., 0.);
-      float t = raySphere(V, W, sphere);
-      if (t < 10000.)
-         color = shadeSphere(V + t * W, sphere, material);
+      vec3 color = vec3(1., 1., 1.);
+      // float t = raySphere(V, W, sphere);
+      // if (t < 10000.)
+      //    color = shadeSphere(V + t * W, sphere, material);
+      if (pow((gl_FragCoord.x / 400. - .5), 2.) + pow((gl_FragCoord.y / 400. - .5), 2.) <= .1 ) {
+        color = vec3(sin(gl_FragCoord.x / 400.), sin(gl_FragCoord.y / 400.), 1.);
+      }
 
       gl_FragColor = vec4(sqrt(color), 1.); // Do Gamma correction.
    }
@@ -81,4 +101,3 @@
 start_gl('canvas1', document.getElementById('my_vertex_shader'  ).innerHTML,
                     document.getElementById('my_fragment_shader').innerHTML);
 </script>
-
