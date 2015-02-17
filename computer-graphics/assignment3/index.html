@@ -91,14 +91,14 @@
       //
       // // YOU NEED TO SET r,g,b FOR material.
       vec3 V = originPosition;
-
+      vec3 diffuse = vec3(.5, .5, .2);
       vec3 color = vec3(.0, .0, .0);
       float t = raySphere(V, W, sphere);
       vec3 normal = normalize((originPosition + W * t) - sphere.xyz);
-      float diffuse = dot(normal, Ldir);
+      float NdotL = dot(normal, Ldir);
 
       if (t < 10000.) {
-        color = ambient + Lrgb * max(0., diffuse);
+        color = ambient + Lrgb * diffuse * max(0., NdotL);
       }
 
       gl_FragColor = vec4(sqrt(color), 1.); // Do Gamma correction.
