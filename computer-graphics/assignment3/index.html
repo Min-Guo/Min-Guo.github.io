@@ -71,14 +71,15 @@
    }
 
    void main(void) {
-      // vec2 c = uCursor.xy;
-      //
-      // Lrgb = vec3(1.,.5,0.);
-      // Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
-      //
+      vec2 c = uCursor.xy;
+
+      Lrgb = vec3(1.,.5,0.);
+      Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
+
       // // YOU NEED TO COMPUTE V AND W TO CREATE THE RAY FOR THIS PIXEL,
       // // USING vPosition.x AND vPosition.y.
       //
+      vec3 objectNormal = vec3(0., 1., 0.);
 
 
       vec3 originPosition = vec3(.5, .5, 6.);
@@ -86,6 +87,7 @@
       vec3 W = normalize(circlePoint - originPosition  );
       vec4 sphere = vec4(.5, .5, 0., .4);
       vec3 material = vec3(.5, .5, .5);
+      vec3 ambient = .2 * material;
       // // YOU NEED TO SET x,y,z AND r FOR sphere.
       //
       // // YOU NEED TO SET r,g,b FOR material.
@@ -96,7 +98,7 @@
       // if (t < 10000.)
       //
       if (t < 10000.) {
-        color = .2 * vec3(pow(material.x, 2.) , pow(material.y, 2.), pow(material.z, 2.));
+        color = ambient + (Lrgb.x * material.x + Lrgb.y * material.y + Lrgb.z * material.z) * max(0., dot(objectNormal, Ldir));
       }
 
       gl_FragColor = vec4(sqrt(color), 1.); // Do Gamma correction.
