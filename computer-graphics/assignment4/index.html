@@ -18,6 +18,8 @@
 <script id='my_fragment_shader' type='x-shader/x-fragment'>
    precision mediump float;
    uniform float uTime;
+   uniform vec3  uCursor;
+   varying vec3  vPosition;
 
    vec4 plane;
    vec3 material;
@@ -28,45 +30,59 @@
    // Compute intersection of a ray with a sphere, if any.  Return t.
    // If there is no intersection, return 10000.
 
-   float rayPlane(vec3 V, vec3 W, vec4 P) {
+   float rayPlane(vec3 V, vec3 W, vec4 plane) {
 
-      // YOU NEED TO COMPUTE t, BY SETTING UP AND THEN SOLVING A QUADRATIC EQUATION.
-      float t = -(dot(P.x, V.x) + dot(P.y, V.y) + dot(P.z, V.z) + sqrt(dot(P.w, P.w)) / (dot(P.x, W.x) + dot(P.y, W.y) + dot(P.z, W.z));
-      if (t > 0.) {
-        return t;
+         float t = - (plane.x * V.x + plane.y * V.y + plane.z * V.z + plane.w) / (plane.x * W.x + plane.y * W.y + plane.z * W.z);
+         if ( t > 0.) {
+           return t;
+         }
+
+         return 10000.;
       }
-      return 10000.;
-   }
+
 
    // Diffusely shade a sphere.
    //    point is the x,y,z position of the surface point.
    //    sphere is the x,y,z,r definition of the sphere.
    //    material is the r,g,b color of the sphere.
 
-   vec3 shadeSphere(vec3 point, vec4 sphere, vec3 material) {
-      vec3 color = vec3(0.,0.,0.);
-      float t;
-      if (t < 10000.) {
-        color = material;
-      }
+  //  vec3 shadePlane(vec3 point, vec4 plane, vec3 material) {
+  //     vec3 color = vec3(0.,0.,0.);
+  //     if (rayPlane(vec3 point, vec4 plane, vec3 material) < 10000.) {
+  //       color = material;
+  //     }
+   //
+  //     return color;
+  //  }
 
-
-      return color;
-   }
 
    void main(void) {
+      vec2 c = uCursor.xy;
+
+      Lrgb = vec3(1.,.5,0.);
+      Ldir = normalize(vec3(c.x, c.y, 1. - 2. * dot(c, c)));
+
+      // YOU NEED TO COMPUTE V AND W TO CREATE THE RAY FOR THIS PIXEL,
+      // USING vPosition.x AND vPosition.y.
+
+      vec3 V = vec3(.5, .5, 6.);
+      // vec3 scenePosition = vec3(gl_FragCoord.x / 400. , gl_FragCoord.y / 400. , 0.);
+      vec3 scenePosition = vec3(gl_FragCoord.x / 400. , gl_FragCoord.y / 400. , 0.);
+
+      vec3 W = normalize(scenePosition - V);
+      // vec4 plane = (0., 0., 1., 1.);
+      vec4 plane = vec4(0., 0., 1., 1.);
+      vec3 material = vec3(.5, .7, .6);
 
 
-      vec3 originPosition = vec3(.5, .5, 6.);
-      vec3 scenePoint = vec3(gl_FragCoord.x / 400. , gl_FragCoord.y / 400. , 0.);
-      vec3 W = normalize(scenePoint - originPosition);
-      vec4 plane = (0., 0., 1., 1.);
+      // YOU NEED TO SET x,y,z AND r FOR sphere.
+
+      // YOU NEED TO SET r,g,b FOR material.
+
       vec3 color = vec3(0., 0., 0.);
-      float t = rayPlane(originPosition, W, plane);
-      vec3 material = vec3 (.5, .6, .7);
-      if (t < 10000.) {
-         color = shadeSphere(originPosition + t * W, plane, material);
-       }
+      float t = rayPlane(V, W, plane);
+      if (t < 10000.)
+         color = material;
 
       gl_FragColor = vec4(sqrt(color), 1.); // Do Gamma correction.
    }
