@@ -72,7 +72,7 @@
       vec3 W = normalize(scenePosition - V);
       // vec4 plane = (0., 0., 1., 1.);
       vec4 plane = vec4(0., 0., 1., 1.);
-      vec3 material = vec3(.5, .7, .6);
+      vec3 material = vec3(.5, .5, .5);
 
 
       // YOU NEED TO SET x,y,z AND r FOR sphere.
@@ -81,8 +81,17 @@
 
       vec3 color = vec3(0., 0., 0.);
       float t = rayPlane(V, W, plane);
-      if (t < 10000.)
-         color = material;
+      if (t < 10000.){
+        if (gl_FragCoord.x / 400. < .5 && gl_FragCoord.y / 400. < .5){
+          color = vec3(1., 1., 1.);
+        }  else if (gl_FragCoord.x / 400. > .5 && gl_FragCoord.y / 400. > .5){
+          color = vec3(1., 1., 1.);
+        }
+        else {
+          color = material;
+        }
+      }
+
 
       gl_FragColor = vec4(sqrt(color), 1.); // Do Gamma correction.
    }
