@@ -1,10 +1,11 @@
-
-
-function scaleMatrix(x, y, w) {
+var Matrix = function () {};
+Matrix.prototype.scale = function (x, y, w) {
   var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
-  for ( i = 0; i < 2; i ++) {
-    transformMatrix[i][i] = x;
-  }
+  // for ( i = 0; i < 2; i ++) {
+  //   transformMatrix[i][i] = x;
+  // }
+  transformMatrix[0][0] = x;
+  transformMatrix[1][1] = y;
   return transformMatrix;
 }
 

@@ -15,22 +15,24 @@
 <script>
    var canvas = initCanvas('canvas1');
    canvas.update = function(g) {
-      g.fillStyle = this.cursor.z ? 'red' : 'rgb(255,255,128)';
+      g.fillStyle = this.cursor.z ? 'red' : 'rgb(255,204,229)';
       g.beginPath();
-      var x = this.cursor.x, y = this.cursor.y;
+      // var x = this.cursor.x, y = this.cursor.y;
+      var x = 500;
+      var y = 400;
       var factor = (new Date()).getSeconds() % 10;
       var matrix = rotateMatrix(factor * 1000);
-      var newPoint = generatePoint (matrix, [-50, -50, 0, 1]);
+      var newPoint = generatePoint (matrix, [-100, -100, 0, 1]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [50, -50, 0, 1]);
+      newPoint = generatePoint (matrix, [100, -100, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [50, 50, 0, 1]);
+      newPoint = generatePoint (matrix, [100, 100, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [-50, 50, 0, 1]);
+      newPoint = generatePoint (matrix, [-100, 100, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
       g.fill();
 
-      g.strokeStyle = 'blue';
+      g.strokeStyle = 'white';
       g.beginPath();
       g.moveTo(0,0);
       g.lineTo(this.width,0);
