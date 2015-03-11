@@ -19,14 +19,14 @@
       g.beginPath();
       var x = this.cursor.x, y = this.cursor.y;
       var factor = (new Date()).getSeconds() % 10;
-      var matrix = scaleMatrix(0.3, 0.8);
-      var newPoint = generatePoint (matrix, [-50, -50, 0, 0]);
+      var matrix = rotateMatrix(factor * 1000);
+      var newPoint = generatePoint (matrix, [-50, -50, 0, 1]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [50, -50, 0, 0]);
+      newPoint = generatePoint (matrix, [50, -50, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [50, 50, 0, 0]);
+      newPoint = generatePoint (matrix, [50, 50, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [-50, 50, 0, 0]);
+      newPoint = generatePoint (matrix, [-50, 50, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
       g.fill();
 

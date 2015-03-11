@@ -29,6 +29,17 @@ function translateMatrix(x) {
   return transformMatrix;
 }
 
+function rotateMatrix(x) {
+  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  for (i = 0; i <2; i ++){
+    transformMatrix[i][i] = Math.cos(x * Math.PI / 180);
+  }
+  transformMatrix[0][1] = - Math.sin(x * Math.PI / 180);
+  transformMatrix[1][0] = Math.sin(x * Math.PI / 180);
+
+  return transformMatrix;
+}
+
 function  generatePoint (matrix, originPoint)  {
   var Point = [0, 0, 0, 1];
   for (i = 0; i < 4; i ++) {
