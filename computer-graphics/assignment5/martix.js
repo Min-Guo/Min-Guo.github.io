@@ -1,7 +1,7 @@
 
 
 function scaleMatrix(x, y, w) {
-  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for ( i = 0; i < 2; i ++) {
     transformMatrix[i][i] = x;
   }
@@ -9,7 +9,7 @@ function scaleMatrix(x, y, w) {
 }
 
 function identityMatrix(x) {
-  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for ( i = 0; i < 4; i ++) {
     transformMatrix[i][i] = x;
   }
@@ -18,7 +18,7 @@ function identityMatrix(x) {
 }
 
 function translateMatrix(x) {
-  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for ( i = 0; i < 2; i ++) {
     transformMatrix[i][i] = 1;
   }
@@ -30,7 +30,7 @@ function translateMatrix(x) {
 }
 
 function rotateMatrix(x) {
-  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for (i = 0; i <2; i ++){
     transformMatrix[i][i] = Math.cos(x * Math.PI / 180);
   }
