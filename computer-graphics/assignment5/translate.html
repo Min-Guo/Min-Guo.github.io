@@ -20,13 +20,9 @@
       var x = 100;
       var y = 100;
       var factor = (new Date()).getSeconds() % 10;
-      // if (factor < 3) {
-      //   var matrix = scaleMatrix(1, 0, 0.55);
-      // }
-      // if (factor  > 3) {
-      //   var matrix = scaleMatrix(1, 0, - 0.55);
-      // }
-      var matrix = scaleMatrix(1, 0, factor * 10);
+      var matrix = translateMatrix(factor * 50);
+      
+      // var matrix = scaleMatrix(1, 0, factor * 50);
       var newPoint = generatePoint (matrix, [-50, -50, 0, 1]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
       newPoint = generatePoint (matrix, [50, -50, 0, 1]);

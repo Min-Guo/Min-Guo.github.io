@@ -5,11 +5,25 @@ function scaleMatrix(x, y, w) {
   for ( i = 0; i < 2; i ++) {
     transformMatrix[i][i] = x;
   }
-  transformMatrix[0][1] = y;
-  transformMatrix[1][0] = y;
+  return transformMatrix;
+}
 
-  for (i = 0; i < 3; i ++) {
-    transformMatrix[i][3] = w;
+function identityMatrix(x) {
+  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  for ( i = 0; i < 4; i ++) {
+    transformMatrix[i][i] = x;
+  }
+
+  return transformMatrix;
+}
+
+function translateMatrix(x) {
+  var transformMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]];
+  for ( i = 0; i < 2; i ++) {
+    transformMatrix[i][i] = 1;
+  }
+  for ( i = 0; i < 3; i ++) {
+    transformMatrix[i][3] = x;
   }
 
   return transformMatrix;

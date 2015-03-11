@@ -19,7 +19,7 @@
       g.beginPath();
       var x = this.cursor.x, y = this.cursor.y;
       // var factor = (new Date()).getSeconds() % 10;
-      var matrix = scaleMatrix(1, 0, 0);
+      var matrix = identityMatrix(1);
       var newPoint = generatePoint (matrix, [-50, -50, 0, 0]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
       newPoint = generatePoint (matrix, [50, -50, 0, 0]);
