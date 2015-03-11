@@ -20,12 +20,17 @@
       g.fillStyle = this.cursor.z ? 'red' : 'rgb(255,255,128)';
       g.beginPath();
       var x = this.cursor.x, y = this.cursor.y;
-      g.moveTo(x-50,y-50);
-      g.lineTo(x+50,y-50);
-      g.lineTo(x+50,y+50);
-      g.lineTo(x-50,y+50);
+      var factor = (new Date()).getSeconds() % 10;
+      var matrix = scaleMatrix(factor * 0.3 + 1);
+      var newPoint = generatePoint (matrix, [-50, -50, 0, 0]);
+      g.moveTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = generatePoint (matrix, [50, -50, 0, 0]);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = generatePoint (matrix, [50, 50, 0, 0]);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = generatePoint (matrix, [-50, 50, 0, 0]);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
       g.fill();
-
 
       g.strokeStyle = 'blue';
       g.beginPath();
