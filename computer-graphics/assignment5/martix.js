@@ -1,5 +1,5 @@
 var Matrix = function () {};
-Matrix.prototype.scale = function (x, y, w) {
+Matrix.prototype.scale = function (x, y) {
   var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   // for ( i = 0; i < 2; i ++) {
   //   transformMatrix[i][i] = x;
@@ -9,16 +9,15 @@ Matrix.prototype.scale = function (x, y, w) {
   return transformMatrix;
 }
 
-function identityMatrix(x) {
+Matrix.prototype.identity = function (x) {
   var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for ( i = 0; i < 4; i ++) {
     transformMatrix[i][i] = x;
   }
-
   return transformMatrix;
 }
 
-function translateMatrix(x) {
+Matrix.prototype.translate = function (x) {
   var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for ( i = 0; i < 2; i ++) {
     transformMatrix[i][i] = 1;
@@ -30,7 +29,7 @@ function translateMatrix(x) {
   return transformMatrix;
 }
 
-function rotateMatrix(x) {
+Matrix.prototype.rotate = function (x) {
   var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for (i = 0; i <2; i ++){
     transformMatrix[i][i] = Math.cos(x * Math.PI / 180);

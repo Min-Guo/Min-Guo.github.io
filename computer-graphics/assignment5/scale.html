@@ -20,8 +20,8 @@
       var x = this.cursor.x, y = this.cursor.y;
       var factor = (new Date()).getSeconds() % 10;
       var matrix = new Matrix();
-      var transformMatrix = matrix.scale(factor * 0.3 + 1, factor * 0.1 + 1);
-      var newPoint = generatePoint (transformMatrix, [-50, -50, 0, 0]);
+      var transformMatrix = matrix.scale(factor * 0.3 + 1, factor * 0.3 + 1);
+      var newPoint = generatePoint(transformMatrix, [-50, -50, 0, 0]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
       newPoint = generatePoint (transformMatrix, [50, -50, 0, 0]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);

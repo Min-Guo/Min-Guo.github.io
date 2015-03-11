@@ -21,14 +21,15 @@
       var x = 500;
       var y = 400;
       var factor = (new Date()).getSeconds() % 10;
-      var matrix = rotateMatrix(factor * 1000);
-      var newPoint = generatePoint (matrix, [-100, -100, 0, 1]);
+      var matrix = new Matrix();
+      var rotateMatrix = matrix.rotate(factor * 100);
+      var newPoint = generatePoint(rotateMatrix, [-100, -100, 0, 1]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [100, -100, 0, 1]);
+      newPoint = generatePoint (rotateMatrix, [100, -100, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [100, 100, 0, 1]);
+      newPoint = generatePoint (rotateMatrix, [100, 100, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [-100, 100, 0, 1]);
+      newPoint = generatePoint (rotateMatrix, [-100, 100, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
       g.fill();
 

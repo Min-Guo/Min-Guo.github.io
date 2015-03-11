@@ -20,16 +20,15 @@
       var x = 100;
       var y = 100;
       var factor = (new Date()).getSeconds() % 10;
-      var matrix = translateMatrix(factor * 50);
-
-      // var matrix = scaleMatrix(1, 0, factor * 50);
-      var newPoint = generatePoint (matrix, [-80, -80, 0, 1]);
+      var matrix = new Matrix();
+      var translateMatrix = matrix.translate(factor * 50);
+      var newPoint = generatePoint(translateMatrix, [-80, -80, 0, 1]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [80, -80, 0, 1]);
+      newPoint = generatePoint (translateMatrix, [80, -80, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [80, 80, 0, 1]);
+      newPoint = generatePoint (translateMatrix, [80, 80, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [-80, 80, 0, 1]);
+      newPoint = generatePoint (translateMatrix, [-80, 80, 0, 1]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
       g.fill();
 

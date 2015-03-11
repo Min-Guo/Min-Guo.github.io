@@ -19,14 +19,15 @@
       g.beginPath();
       var x = this.cursor.x, y = this.cursor.y;
       // var factor = (new Date()).getSeconds() % 10;
-      var matrix = identityMatrix(1);
-      var newPoint = generatePoint (matrix, [-50, -50, 0, 0]);
+      var matrix = new Matrix();
+      var identityMatrix = matrix.identity(1);
+      var newPoint = generatePoint(identityMatrix, [-50, -50, 0, 0]);
       g.moveTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [50, -50, 0, 0]);
+      newPoint = generatePoint (identityMatrix, [50, -50, 0, 0]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [50, 50, 0, 0]);
+      newPoint = generatePoint (identityMatrix, [50, 50, 0, 0]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
-      newPoint = generatePoint (matrix, [-50, 50, 0, 0]);
+      newPoint = generatePoint (identityMatrix, [-50, 50, 0, 0]);
       g.lineTo(x+ newPoint[0], y + newPoint[1]);
       g.fill();
 
