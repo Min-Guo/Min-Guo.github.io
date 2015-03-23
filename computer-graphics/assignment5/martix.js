@@ -17,6 +17,16 @@ Matrix.prototype.identity = function (x) {
   return transformMatrix;
 }
 
+
+Matrix.prototype.perspective = function (x, y) {
+  var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+  for ( i = 0; i < 4; i ++) {
+    transformMatrix[i][i] = x / y;
+  }
+  transformMatrix[2][2] = x / y / y;
+  return transformMatrix;
+}
+
 Matrix.prototype.translate = function (x) {
   var transformMatrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
   for ( i = 0; i < 2; i ++) {
