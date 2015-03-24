@@ -48,6 +48,14 @@
 </td>
 </tr>
 
+<tr>
+<td><canvas id=canvas7 width=600 height=400></td>
+<td width=50></td>
+<td valign=center>
+  Rotate about the Z axis and the scale transformation
+</td>
+</tr>
+
 </table>
 
 <script src=drawlib1.js></script>
@@ -609,4 +617,93 @@
                            g.stroke();
 
                   }
+
+                  var canvas = initCanvas('canvas7');
+                     var startTime = (new Date()).getSeconds();
+                     canvas.update = function(g) {
+                        g.strokeStyle = 'red';
+                        g.beginPath();
+                        // var x = this.cursor.x, y = this.cursor.y;
+                        var x = 300;
+                        var y = 200;
+                        var focalLength = -30;
+                        var zFrontPosition = 10;
+                        var zBackPosition = 210;
+                        var zMoveNegative = - (zBackPosition + zFrontPosition) / 2;
+                        var zMovePositive = - zMoveNegative;
+                        var width = 100;
+                        var factor = ((new Date()).getSeconds() - startTime) % 40;
+                        var matrix = new Matrix();
+                        var zNegativeTranslate = matrix.translateZ(zMoveNegative);
+                        var zPositiveTranslate = matrix.translateZ(zMovePositive);
+                        var ztMatrix = matrix.matrixMultiply(matrix.rotateZ(factor * 9), zNegativeTranslate);
+                        var sztMatrix = matrix.matrixMultiply( matrix.scale(factor * 0.3 + 1, factor * 0.3 + 1), ztMatrix);
+                        var tsrtMatrix = matrix.matrixMultiply(zPositiveTranslate, sztMatrix);
+
+                        function fixPoint(matrix1, point, focalLength) {
+                          var transformPoint = generatePoint(matrix1, point);
+                          var perspectiveMatrix = matrix.perspective(focalLength, transformPoint[2]);
+                          var newPoint = generatePoint(perspectiveMatrix, transformPoint);
+
+                          return newPoint;
+                        }
+
+                        var newPoint = fixPoint(tsrtMatrix, [width, width, zFrontPosition, 1], focalLength);
+                        g.moveTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, - width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, - width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        g.stroke();
+
+                        newPoint = fixPoint(tsrtMatrix, [width, width, zFrontPosition, 1], focalLength);
+                        g.moveTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, - width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, - width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        g.stroke();
+
+                        newPoint = fixPoint(tsrtMatrix, [width, width, zBackPosition, 1], focalLength);
+                        g.moveTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, - width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, - width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [width, width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        g.stroke();
+
+                        newPoint = fixPoint(tsrtMatrix, [- width, width, zFrontPosition, 1], focalLength);
+                        g.moveTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, - width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, - width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, width, zBackPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        newPoint = fixPoint(tsrtMatrix, [- width, width, zFrontPosition, 1], focalLength);
+                        g.lineTo(x+ newPoint[0], y + newPoint[1]);
+                        g.stroke();
+
+                        g.strokeStyle = 'blue';
+                              g.beginPath();
+                              g.moveTo(0,0);
+                              g.lineTo(this.width,0);
+                              g.lineTo(this.width,this.height);
+                              g.lineTo(0,this.height);
+                              g.lineTo(0,0);
+                              g.stroke();
+
+                     }
 </script>
