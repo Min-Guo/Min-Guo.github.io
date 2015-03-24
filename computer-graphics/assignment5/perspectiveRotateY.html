@@ -1,0 +1,97 @@
+
+<table>
+<tr>
+<td><canvas id=canvas1 width=1000 height=800></td>
+<td width=50></td>
+<td valign=top>
+
+</tr>
+
+
+</table>
+
+<script src=drawlib1.js></script>
+<script src=martix.js></script>
+<script>
+   var canvas = initCanvas('canvas1');
+   var startTime = (new Date()).getSeconds();
+   canvas.update = function(g) {
+      g.strokeStyle = 'blue';
+      g.beginPath();
+      // var x = this.cursor.x, y = this.cursor.y;
+      var x = 500;
+      var y = 400;
+      var focalLength = -300;
+      var zFrontPosition = 10;
+      var zBackPosition = 210;
+      var zMoveNegative = - (zBackPosition + zFrontPosition) / 2;
+      var zMovePositive = - zMoveNegative;
+      var width = 100;
+      var factor = ((new Date()).getSeconds() - startTime) % 40;
+      var matrix = new Matrix();
+      var zNegativeTranslate = matrix.translateZ(zMoveNegative);
+      var zPositiveTranslate = matrix.translateZ(zMovePositive);
+      var ytMatrix = matrix.matrixMultiply(matrix.rotateY(factor * 9), zNegativeTranslate);
+      // var xytMatrix = matrix.matrixMultiply(matrix.rotateX(factor * 9), ytMatrix);
+      var zxytMatrix = matrix.matrixMultiply(matrix.rotateZ(factor * 9), ytMatrix);
+      var trtMatrix = matrix.matrixMultiply(zPositiveTranslate, zxytMatrix);
+
+      function fixPoint(matrix1, point, focalLength) {
+        var transformPoint = generatePoint(matrix1, point);
+        var perspectiveMatrix = matrix.perspective(focalLength, transformPoint[2]);
+        var newPoint = generatePoint(perspectiveMatrix, transformPoint);
+
+        return newPoint;
+      }
+
+      var newPoint = fixPoint(trtMatrix, [width, width, zFrontPosition, 1], focalLength);
+      g.moveTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, - width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, - width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      g.stroke();
+
+      newPoint = fixPoint(trtMatrix, [width, width, zFrontPosition, 1], focalLength);
+      g.moveTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, - width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, - width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      g.stroke();
+
+      newPoint = fixPoint(trtMatrix, [width, width, zBackPosition, 1], focalLength);
+      g.moveTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, - width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, - width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [width, width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      g.stroke();
+
+      newPoint = fixPoint(trtMatrix, [- width, width, zFrontPosition, 1], focalLength);
+      g.moveTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, - width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, - width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, width, zBackPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      newPoint = fixPoint(trtMatrix, [- width, width, zFrontPosition, 1], focalLength);
+      g.lineTo(x+ newPoint[0], y + newPoint[1]);
+      g.stroke();
+
+   }
+
+</script>
