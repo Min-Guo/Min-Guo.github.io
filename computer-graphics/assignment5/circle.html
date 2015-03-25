@@ -1,0 +1,72 @@
+<table>
+<tr>
+<td><canvas id=canvas1 width=1000 height=800></td>
+<td width=50></td>
+<td valign=top>
+
+</tr>
+
+
+</table>
+
+<script src=drawlib1.js></script>
+<script src=martix.js></script>
+<script>
+  'use strict';
+   var canvas = initCanvas('canvas1');
+   canvas.update = function(g) {
+      g.strokeStyle = 'blue';
+      g.beginPath();
+      var pointMatrix = [];
+      var x = 500;
+      var y = 400;
+      var radius = 100;
+      var focalLength = -200;
+      var matrix = new Matrix();
+
+      function generateCirclePoint() {
+        for (var i = 0; i < 21; i ++) {
+          var zPosition = 100 + 5 * i;
+          var circleArray = [];
+          for (var j = 0; j < 21; j ++) {
+            var factor = ((new Date()).getSeconds() - startTime) % 40;
+            var xPosition = radius * Math.sin(j * 18 * Math.PI / 180);
+            var yPosition = radius * Math.cos(j * 18 * Math.PI / 180);
+            var zTranslateDistance = - 150;
+            var originalPoint = [xPosition, yPosition, zPosition, 1];
+            var zTranslate = matrix.translateZ(zTranslateDistance);
+            var zTranslateBack = matrix.translateZ(- zTranslateDistance);
+            var xtMatrix = matrix.matrixMultiply(matrix.rotateX(factor * 9), zTranslate);
+            var trtMatrix = matrix.matrixMultiply(zTranslateBack, xtMatrix);
+
+            var fixPoint = function(matrix1, point, focalLength) {
+              var transformPoint = generatePoint(matrix1, point);
+              var perspectiveMatrix = matrix.perspective(focalLength, transformPoint[2]);
+              var newPoint = generatePoint(perspectiveMatrix, transformPoint);
+
+              return newPoint;
+            };
+
+            var circlePoint = fixPoint(trtMatrix, originalPoint, focalLength);
+            circleArray.push(circlePoint);
+          }
+          pointMatrix.push(circleArray);
+        }
+      }
+    //
+    generateCirclePoint();
+    //
+    function drawCylinder(){
+      var point = pointMatrix[0][0];
+      g.moveTo(x + point[0], y + point[1]);
+      for (i = 1; i < 21; i ++) {
+        point = pointMatrix[0][i];
+        g.lineTo(x + point[0], y + point[1]);
+      }
+      g.stroke();
+    }
+    drawCylinder();
+
+
+  }
+    </script>
