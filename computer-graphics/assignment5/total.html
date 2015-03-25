@@ -62,6 +62,7 @@
 <script src=martix.js></script>
 <script>
    var canvas = initCanvas('canvas1');
+   var startTime = (new Date()).getSeconds();
    canvas.update = function(g) {
       g.strokeStyle = 'red';
       g.beginPath();
