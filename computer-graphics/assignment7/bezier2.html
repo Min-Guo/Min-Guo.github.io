@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <canvas width="800px" height="600px" style="width: 800px; height: 600px; border:1px ridge green;" id="canvas1">
+
+<script>
+var c = document.getElementById("canvas1");
+var ctx= c.getContext("2d");
+var pointA = [100, 500];
+var pointB = [200, 200];
+var pointC = [400, 200];
+var pointD = [500, 400];
+ctx.beginPath();
+ctx.arc(pointA[0], pointA[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pointB[0], pointB[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pointC[0], pointC[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pointD[0], pointD[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.moveTo(pointA[0], pointA[1]);
+ctx.lineTo(pointB[0], pointB[1]);
+ctx.lineTo(pointC[0], pointC[1]);
+ctx.lineTo(pointD[0], pointD[1]);
+ctx.stroke();
+
+
+</script>
+</body>
+</html>
