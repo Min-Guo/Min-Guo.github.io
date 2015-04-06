@@ -40,7 +40,7 @@ $(document).ready(function(){
         function drawCurve(p0, p1, r0, r1) {
 
           ctx.moveTo(xPos(0, p0, p1, r0, r1), yPos(0, p0, p1,r0, r1));
-          for (var t = 0.01; t <= 1.0; t += 0.001) {
+          for (var t = 0.001; t <= 1.0; t += 0.001) {
             ctx.lineTo(xPos(t, p0, p1, r0, r1), yPos(t, p0, p1, r0, r1));
           }
           ctx.arc(newDot[0], newDot[1], 5, 0, 2*Math.PI);
