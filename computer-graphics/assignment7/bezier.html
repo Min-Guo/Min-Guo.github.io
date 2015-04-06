@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <canvas width="1000px" height="1000px" style="width: 1000px; height: 800px; border:1px ridge green;" id="myCanvas">
+
+<script>
+var c = document.getElementById("myCanvas");
+var ctx= c.getContext("2d");
+ctx.beginPath();
+var pointA = [300, 200];
+var pointB = [600, 400];
+var pointC = [700, 200];
+ctx.arc(pointA[0], pointA[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pointB[0], pointB[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pointC[0], pointC[1], 5, 0, 2*Math.PI);
+ctx.stroke();
+ctx.moveTo(pointA[0], pointA[1]);
+ctx.lineTo(pointB[0], pointB[1]);
+ctx.lineTo(pointC[0], pointC[1]);
+ctx.stroke();
+
+function xPos (t, firstPoint, secondPoint, thirdPoint) {
+  var x = (1 - t) * ((1- t) * firstPoint[0] + t * secondPoint[0]) + t * ((1 - t) * secondPoint[0] + t * thirdPoint[0]);
+  return x;
+}
+
+function yPos (t, firstPoint, secondPoint, thirdPoint) {
+  var y = (1 - t) * ((1- t) * firstPoint[1] + t * secondPoint[1]) + t * ((1 - t) * secondPoint[1] + t * thirdPoint[1]);
+  return y;
+}
+
+
+
+function drawCurve(firstPoint, secondPoint, thirdPoint) {
+  ctx.moveTo(xPos (0, firstPoint, secondPoint, thirdPoint), yPos (0, firstPoint, secondPoint, thirdPoint));
+  for (var t = 0.001; t <= 1.0; t += 0.001) {
+    ctx.lineTo(xPos (t, firstPoint, secondPoint, thirdPoint), yPos (t, firstPoint, secondPoint, thirdPoint))
+  }
+  ctx.stroke();
+}
+
+drawCurve(pointA, pointB, pointC);
+</script>
+</body>
+</html>
