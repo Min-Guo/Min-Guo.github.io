@@ -2,11 +2,18 @@
 <html>
 <body>
   <canvas width="800px" height="600px" style="width: 800px; height: 600px; border:1px ridge green;" id="canvas1">
+  <script src=drawlib1.js></script>
 
 <script>
+var canvas = initCanvas('canvas1');
+var startTime = (new Date()).getTime();
+var curvePointArray = [];
+canvas.update = function( ) {
 var c = document.getElementById("canvas1");
 var ctx= c.getContext("2d");
-
+var t1 = ((new Date()).getTime() - startTime);
+var t = t1 / 60000;
+console.log(t);
 var pointA = [200, 200];
 var pointB = [500, 400];
 var pointC = [700, 200];
@@ -23,26 +30,55 @@ ctx.moveTo(pointA[0], pointA[1]);
 ctx.lineTo(pointB[0], pointB[1]);
 ctx.lineTo(pointC[0], pointC[1]);
 ctx.stroke();
-
-function xPos (t, firstPoint, secondPoint, thirdPoint) {
-  var x = (1 - t) * ((1- t) * firstPoint[0] + t * secondPoint[0]) + t * ((1 - t) * secondPoint[0] + t * thirdPoint[0]);
+var interPoint1 = [xPos (t, pointA, pointB), yPos (t, pointA, pointB)];
+var interPoint2 = [xPos (t, pointB, pointC), yPos (t, pointB, pointC)];
+var curvePoint = [xPos (t, interPoint1, interPoint2), yPos (t, interPoint1, interPoint2)];
+curvePointArray.push(curvePoint);
+function xPos (t, point1, point2) {
+  var x = (1 - t) * point1[0] + t * point2[0];
   return x;
 }
 
-function yPos (t, firstPoint, secondPoint, thirdPoint) {
-  var y = (1 - t) * ((1- t) * firstPoint[1] + t * secondPoint[1]) + t * ((1 - t) * secondPoint[1] + t * thirdPoint[1]);
+function yPos (t, point1, point2) {
+  var y = (1 - t) * point1[1] + t * point2[1];
   return y;
 }
 
-function drawCurve(firstPoint, secondPoint, thirdPoint) {
-  ctx.moveTo(xPos (0, firstPoint, secondPoint, thirdPoint), yPos (0, firstPoint, secondPoint, thirdPoint));
-  for (var t = 0.001; t <= 1.0; t += 0.001) {
-    ctx.lineTo(xPos (t, firstPoint, secondPoint, thirdPoint), yPos (t, firstPoint, secondPoint, thirdPoint))
-  }
+function drawEdges (point1, point2, point3) {
+  if (t <= 1) {
+  ctx.strokeStyle = 'black';
+  ctx.moveTo(xPos(t, point1, point2), yPos(t, point1, point2));
+  ctx.lineTo(xPos(t, point2, point3), yPos(t, point2, point3));
   ctx.stroke();
 }
+else{
+  startTime = (new Date()).getTime();
+  console.log(startTime);
+}
+}
 
-drawCurve(pointA, pointB, pointC);
+function drawCurve(point) {
+  if (t <= 1) {
+  ctx.strokeStyle = 'red';
+  ctx.beginPath();
+  ctx.moveTo(curvePointArray[0][0], curvePointArray[0][1]);
+  for (var i = 1; i < curvePointArray.length; i ++) {
+    ctx.lineTo(curvePointArray[i][0], curvePointArray[i][1]);
+  }
+  ctx.stroke();
+  }
+  else {
+    startTime = (new Date()).getTime();
+    curvePointArray = [];
+  }
+
+}
+
+
+drawEdges(pointA, pointB, pointC);
+drawCurve(curvePoint);
+
+}
 </script>
 </body>
 </html>
