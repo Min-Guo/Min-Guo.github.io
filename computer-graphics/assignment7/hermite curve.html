@@ -1,12 +1,21 @@
 <!DOCTYPE HTML>
 <html>
+
 <body>
-  <canvas width="1000px" height="1000px" style="width: 1000px; height: 800px; border:1px ridge green;" id="special">
+  <table>
+  <tr>
+  <td><canvas id=myCanvas width=1200 height=800 style="border:1px solid #000000;"></td>
+  <td width=50></td>
+  <td valign=center>
+    Click on the table and draw hermite curve.
+  </td>
+  </tr>
+</table>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
   var dotArray = [];
-     $("#special").click(function(e){
+     $("#myCanvas").click(function(e){
 
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
@@ -14,6 +23,8 @@ $(document).ready(function(){
         var preDot = [];
         var newDot = [];
         dotArray.push(dotPos);
+
+
 
         if (dotArray.length === 1) {
         preDot = dotArray[dotArray.length - 1];
@@ -51,7 +62,10 @@ $(document).ready(function(){
         ctx.stroke();
         if (dotArray.length >= 2) {
           drawCurve(preDot, newDot, 0.3, 0.1);
+
+
         }
+
 
    });
 })

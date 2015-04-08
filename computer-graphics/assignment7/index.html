@@ -1,61 +1,25 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+<head>
+  <title>Page Title</title>
+</head>
+
 <body>
-  <canvas width="1000px" height="1000px" style="width: 1000px; height: 800px; border:1px ridge green;" id="special">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  var dotArray = [];
-     $("#special").click(function(e){
 
-        var x = e.pageX - this.offsetLeft;
-        var y = e.pageY - this.offsetTop;
-        var dotPos = [x, y];
-        var preDot = [];
-        var newDot = [];
-        dotArray.push(dotPos);
+  <h1>Assignments List</h1>
 
-        if (dotArray.length === 1) {
-        preDot = dotArray[dotArray.length - 1];
-      } else{
-        preDot = dotArray[dotArray.length - 2];
-      }
+  <p>
+    <a href="bezier.html" style ="font-size : 25px">Bezier Curve</a>
+  </p>
 
-        newDot = dotArray[dotArray.length - 1];
+  <p>
+    <a href="bezier2.html" style ="font-size : 25px">Bezier Curve_2</a>
+  </p>
 
+  <p>
+    <a href="hermite curve.html" style ="font-size : 25px">Hermite Curve</a>
+  </p>
 
-        var ctx= this.getContext("2d");
-
-        function xPos(t, p0, p1, r0, r1) {
-          var x = (p0[0]* (2 * Math.pow(t, 2) - 3 * Math.pow(t, 2) + 1) + p1[0] *(- 2 * Math.pow(t, 3) +
-          3 * Math.pow(t, 2)) + r0 * (Math.pow(t, 3) - 2 * Math.pow(t, 2) + t) + r1 * (Math.pow(t, 3) - Math.pow(t, 2)));
-          return x;
-        }
-        function yPos(t, p0, p1, r0, r1) {
-          var y = (p0[1]* (2 * Math.pow(t, 2) - 3 * Math.pow(t, 2) + 1) + p1[1] *(- 2 * Math.pow(t, 3) +
-          3 * Math.pow(t, 2)) + r0 * (Math.pow(t, 3) - 2 * Math.pow(t, 2) + t) + r1 * (Math.pow(t, 3) - Math.pow(t, 2)));
-          return y;
-        }
-
-        function drawCurve(p0, p1, r0, r1) {
-
-          ctx.moveTo(xPos(0, p0, p1, r0, r1), yPos(0, p0, p1,r0, r1));
-          for (var t = 0.001; t <= 1.0; t += 0.001) {
-            ctx.lineTo(xPos(t, p0, p1, r0, r1), yPos(t, p0, p1, r0, r1));
-          }
-          ctx.arc(newDot[0], newDot[1], 5, 0, 2*Math.PI);
-          ctx.stroke();
-        }
-        ctx.beginPath();
-        ctx.arc(preDot[0], preDot[1], 5, 0, 2*Math.PI);
-        ctx.stroke();
-        if (dotArray.length >= 2) {
-          drawCurve(preDot, newDot, 0.3, 0.1);
-        }
-
-   });
-})
-
-</script>
 </body>
+
 </html>
