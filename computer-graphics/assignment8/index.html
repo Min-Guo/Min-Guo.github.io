@@ -208,36 +208,34 @@ The combined movements of the joint and the ball create the desired animation.
 <td id='Scene2_code'>
 <pre>
 function Scene2() {
-   var box, joint, ball;
+   var earth, earthGeometry, earthMaterial, joint, moon, moonGeometry, moonMaterial;
 
    this.setup = function() {
       var light = new THREE.DirectionalLight(0xffffff);
       light.position.set(1, 1, 1).normalize();
       this.scene.add(light);
 
-      var material = new THREE.MeshBasicMaterial({
-          map: THREE.ImageUtils.loadTexture( 'images/earthmap.jpg' ), overdraw: true
-      });
-
-      box = new THREE.Mesh(new THREE.SphereGeometry(1, 30, 30), material);
+      var earthMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'images/earthmap.jpg' )});
+      var moonMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'images/moonmap.jpg' )});
+      earth = new THREE.Mesh(new THREE.SphereGeometry(1, 30, 30), earthMaterial);
       joint = new THREE.Mesh();
-      ball = new THREE.Mesh(new THREE.SphereGeometry(.7, 30, 30), material);
+      moon = new THREE.Mesh(new THREE.SphereGeometry(.7, 30, 30), moonMaterial);
 
-      this.scene.add(box);
-      box.add(joint);
-      joint.add(ball);
+      this.scene.add(earth);
+      earth.add(joint);
+      joint.add(moon);
    }
 
    this.update = function() {
-      box.rotation.y = -time;
+      earth.rotation.y = -time;
 
       joint.position.y = 0;
-      joint.rotation.x = time;
+      <!-- joint.rotation.x = time; -->
 
-      ball.position.set(2, 0, 0);
-      ball.rotation.x = Math.PI/2;
-      ball.rotation.z = -time;
-      ball.scale.set(.5,.5,.5);
+      moon.position.set(2, 0, 0);
+      <!-- moon.rotation.x = Math.PI/2; -->
+      moon.rotation.y = -time ;
+      moon.scale.set(.5,.5,.5);
    }
 }
 Scene2.prototype = new SimpleScene;
