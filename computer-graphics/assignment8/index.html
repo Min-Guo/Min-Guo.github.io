@@ -19,7 +19,7 @@
 
 <center><big><b>
 
-Notes for April 8 class -- Building on three.js
+
 
 </b></big></center>
 
@@ -32,23 +32,6 @@ Notes for April 8 class -- Building on three.js
 <TD width=80%>
 <FONT face=helvetica>
 
-<p><b>Using a higher level library</b><p>
-
-<blockquote>
-Now that you have seen how to directly interface with WebGL,
-we can move on and use a higher level library.
-<a href=threejs.org>three.js</a> is an open source
-library that builds an infrastructure of modeling
-and rendering tools upon the base level of WebGL.
-It allows you to more rapidly create larger projects,
-without forcing you to deal with many of the low
-level details.
-<p>
-When you need to, it also gives you ways to directly
-access WebGL directly, which you might want to
-do if you choose to write your own shaders
-or create your own custom 3D shapes.
-</blockquote>
 
 </FONT>
 </TD>
@@ -167,10 +150,7 @@ function Scene1() {
 
    this.setup = function() {
       var geometry = new THREE.SphereGeometry(.5, 32, 32);
-      var material = new THREE.MeshPhongMaterial();
-      THREE.ImageUtils.crossOrigin = ' ';
-      console.log(THREE.ImageUtils.crossOrigin);
-      material.map    = THREE.ImageUtils.loadTexture('images/earthmap.jpg')
+      var material = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture( 'images/earthmap.jpg' ), overdraw: true } );
       box = new THREE.Mesh(geometry, material);
       this.scene.add(box);
    }
@@ -235,15 +215,13 @@ function Scene2() {
       light.position.set(1, 1, 1).normalize();
       this.scene.add(light);
 
-      var material = new THREE.MeshNormalMaterial(
-      {
+      var material = new THREE.MeshBasicMaterial({
+          map: THREE.ImageUtils.loadTexture( 'images/earthmap.jpg' ), overdraw: true
+      });
 
-      }
-      );
-
-      box = new THREE.Mesh(new THREE.SphereGeometry(1, 10, 10), material);
+      box = new THREE.Mesh(new THREE.SphereGeometry(1, 30, 30), material);
       joint = new THREE.Mesh();
-      ball = new THREE.Mesh(new THREE.SphereGeometry(.7, 10, 10), material);
+      ball = new THREE.Mesh(new THREE.SphereGeometry(.7, 30, 30), material);
 
       this.scene.add(box);
       box.add(joint);
