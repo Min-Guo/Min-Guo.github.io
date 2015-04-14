@@ -7,8 +7,8 @@
 <body background = "galaxy.jpg">
 
 <script>
-var earth, earthGeometry, earthMaterial, joint, moon, moonGeometry, moonMaterial, render;
-var canvas1 = document.getElementById('canvas1') ;
+var sun, sunGeometry, sunMaterial, joint1, earth, earthGeometry, earthMaterial, joint, moon, moonGeometry, moonMaterial, render;
+// var canvas1 = document.getElementById('canvas1') ;
 
 init();
 animate();
@@ -19,22 +19,25 @@ function init()
 
   // CREATE THE CAMERA, AND ATTACH IT TO THE SCENE.
   camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000 );
-  camera.position.z = 250;
+  camera.position.z = 300;
   scene.add(camera);
 
-
+  sunMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'sunmap.jpg' )});
   earthMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'earthmap.jpg' )});
   moonMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'moonmap.jpg' )});
-  earth = new THREE.Mesh(new THREE.SphereGeometry(30, 30, 30), earthMaterial);
+  sun = new THREE.Mesh(new THREE.SphereGeometry(20, 30, 30), sunMaterial);
+  earth = new THREE.Mesh(new THREE.SphereGeometry(10, 30, 30), earthMaterial);
+  moon = new THREE.Mesh(new THREE.SphereGeometry(5, 30, 30), moonMaterial);
   joint = new THREE.Mesh();
-  moon = new THREE.Mesh(new THREE.SphereGeometry(10, 30, 30), moonMaterial);
-  scene.add(earth);
-  scene.add(moon);
+  joint1 = new THREE.Mesh();
+  scene.add(sun);
+  sun.add(joint1);
+  joint1.add(earth);
   earth.add(joint);
   joint.add(moon);
 
 
-  renderer = new THREE.WebGLRenderer(canvas1);
+  renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
@@ -48,9 +51,10 @@ function animate()
 
 function render()
 {
-  earth.rotation.y += 0.01;
-  joint.position.y = 0;
-  moon.position.set(70, 0, 0);
+  sun.rotation.y += 0.005;
+  earth.rotation.y += 0.02;
+  earth.position.set(80, 0, 0);
+  moon.position.set(20, 0, 0);
   moon.rotation.y += 0.05;
   renderer.render( scene, camera );
 }
