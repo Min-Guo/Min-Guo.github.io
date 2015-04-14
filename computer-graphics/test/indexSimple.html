@@ -4,7 +4,7 @@
 <title>Rotating Earth Example using WebGL through the help of three.js</title>
 <script src="three.js"></script>
 </head>
-<body background = "images/galaxy.jpg">
+<body background = "galaxy.jpg">
 
 <script>
 var earth, earthGeometry, earthMaterial, joint, moon, moonGeometry, moonMaterial, render;
@@ -23,8 +23,8 @@ function init()
   scene.add(camera);
 
 
-  earthMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'images/earthmap.jpg' )});
-  moonMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'images/moonmap.jpg' )});
+  earthMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'earthmap.jpg' )});
+  moonMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'moonmap.jpg' )});
   earth = new THREE.Mesh(new THREE.SphereGeometry(30, 30, 30), earthMaterial);
   joint = new THREE.Mesh();
   moon = new THREE.Mesh(new THREE.SphereGeometry(10, 30, 30), moonMaterial);
