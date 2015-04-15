@@ -22,12 +22,12 @@ function init()
   camera.position.z = 300;
   scene.add(camera);
 
-  sunMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'sunmap.jpg' )});
+  sunMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'sunmap1.jpg' )});
   earthMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'earthmap.jpg' )});
   moonMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'moonmap.jpg' )});
   sun = new THREE.Mesh(new THREE.SphereGeometry(20, 30, 30), sunMaterial);
   earth = new THREE.Mesh(new THREE.SphereGeometry(10, 30, 30), earthMaterial);
-  moon = new THREE.Mesh(new THREE.SphereGeometry(5, 30, 30), moonMaterial);
+  moon = new THREE.Mesh(new THREE.SphereGeometry(8, 30, 30), moonMaterial);
   joint = new THREE.Mesh();
   joint1 = new THREE.Mesh();
   scene.add(sun);
@@ -53,7 +53,7 @@ function render()
 {
   sun.rotation.y += 0.005;
   earth.rotation.y += 0.02;
-  earth.position.set(80, 0, 0);
+  earth.position.set(100, 0, 0);
   moon.position.set(20, 0, 0);
   moon.rotation.y += 0.05;
   renderer.render( scene, camera );
