@@ -148,8 +148,8 @@
 					vertexShader:   document.getElementById( 'vertexShader'   ).textContent,
 					fragmentShader: document.getElementById( 'fragmentShader' ).textContent
 					}   );
-	// other material properties
-					customMaterial.side = THREE.DoubleSide;
+	// // other material properties
+	// 				customMaterial.side = THREE.DoubleSide;
 
 				// water = new THREE.Water( renderer, camera, scene, {
 				// 	textureWidth: 512,
@@ -171,9 +171,9 @@
 				// mirrorMesh.add( water );
 				// mirrorMesh.rotation.x = - Math.PI * 0.5;
 				// scene.add( mirrorMesh );
-				var flatGeometry = new THREE.PlaneGeometry( parameters.width * 5, parameters.height * 5  );
+				var flatGeometry = new THREE.PlaneBufferGeometry( parameters.width * 5, parameters.height * 5  );
     		var surface = new THREE.Mesh( flatGeometry, customMaterial );
-				surface.position.set(-60,50,150);
+				surface.rotation.x = - Math.PI * 0.5;
 				scene.add( surface );
 
 
@@ -263,9 +263,9 @@
 
 				var time = performance.now() * 0.001;
 
-				// sphere.position.y = Math.sin( time ) * 500 + 250;
-				// sphere.rotation.x = time * 2.0;
-				// sphere.rotation.z = time * 0.51;
+				sphere.position.y = Math.sin( time ) * 500 + 250;
+				sphere.rotation.x = time * 2.0;
+				sphere.rotation.z = time * 0.51;
 
 				customUniforms.time.value += 1.0 / 60.0;
 				controls.update();
