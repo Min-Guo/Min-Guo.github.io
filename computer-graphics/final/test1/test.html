@@ -127,7 +127,7 @@
 
 				var noiseTexture = new THREE.ImageUtils.loadTexture( 'cloud.png' );
 				noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
-				var waterTexture = new THREE.ImageUtils.loadTexture( 'water.jpg' );
+				var waterTexture = new THREE.ImageUtils.loadTexture( 'transparentWater.jpg' );
 				waterTexture.wrapS = waterTexture.wrapT = THREE.RepeatWrapping;
 
 
@@ -264,8 +264,9 @@
 				var time = performance.now() * 0.001;
 
 				sphere.position.y = Math.sin( time ) * 500 + 250;
-				sphere.rotation.x = time * 2.0;
-				sphere.rotation.z = time * 0.51;
+				sphere.position.x = time * 100;
+				// sphere.rotation.z = time * 0.51;
+
 
 				customUniforms.time.value += 1.0 / 60.0;
 				controls.update();
