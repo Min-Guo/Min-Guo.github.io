@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - terrain</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				color: #000;
+				font-family:Monospace;
+				font-size:13px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				text-align:center;
+				padding: 5px;
+			}
+
+			a {
+
+				color: #a06851;
+			}
+
+		</style>
+	</head>
+
+<body>
+<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - webgl ocean demo</div>
+<script src="three.min.js"></script>
+
+<script>
+// if ( ! Detector.webgl ) {
+//
+// 	Detector.addGetWebGLMessage();
+// 	document.getElementById( 'container' ).innerHTML = "";
+//
+// }
+var container, stats;
+var camera, scene, renderer;
+var sphere;
+
+var parameters = {
+	width: 2000,
+	height: 2000,
+	widthSegments: 250,
+	heightSegments: 250,
+	depth: 1500,
+	param: 4,
+	filterparam: 1
+}
+
+init();
+animate();
+
+function init() {container = document.createElement( 'div' );
+document.body.appendChild( container );
+renderer = new THREE.WebGLRenderer();
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
+
+container.appendChild( renderer.domElement );
+
+scene = new THREE.Scene();
+
+camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 0.5, 3000000 );
+camera.position.set( 2000, 750, 2000 );
+
+var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+light.position.set( - 1, 1, - 1 );
+scene.add( light );
+var planeMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture( 'water.jpg' )});
+var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), planeMaterial);
+      plane.overdraw = true;
+      scene.add(plane);
+
+
+
+}
+
+function animate() {
+
+	requestAnimationFrame( animate );
+	render();
+
+}
+function render()
+{
+  renderer.render( scene, camera );
+}
+</script>
+</body>
+</html>
