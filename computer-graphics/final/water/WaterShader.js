@@ -27,7 +27,7 @@ THREE.ShaderLib['water'] = {
 
 		'varying vec4 mirrorCoord;',
 		'varying vec3 worldPosition;',
-		
+
 		'void main()',
 		'{',
 		'	mirrorCoord = modelMatrix * vec4( position, 1.0 );',
@@ -39,7 +39,7 @@ THREE.ShaderLib['water'] = {
 
 	fragmentShader: [
 		'precision highp float;',
-		
+
 		'uniform sampler2D mirrorSampler;',
 		'uniform float alpha;',
 		'uniform float time;',
@@ -52,7 +52,7 @@ THREE.ShaderLib['water'] = {
 
 		'varying vec4 mirrorCoord;',
 		'varying vec3 worldPosition;',
-		
+
 		'vec4 getNoise( vec2 uv )',
 		'{',
 		'	vec2 uv0 = ( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);',
@@ -65,7 +65,7 @@ THREE.ShaderLib['water'] = {
 		'		( texture2D( normalSampler, uv3 ) );',
 		'	return noise * 0.5 - 1.0;',
 		'}',
-		
+
 		'void sunLight( const vec3 surfaceNormal, const vec3 eyeDirection, float shiny, float spec, float diffuse, inout vec3 diffuseColor, inout vec3 specularColor )',
 		'{',
 		'	vec3 reflection = normalize( reflect( -sunDirection, surfaceNormal ) );',
@@ -73,7 +73,7 @@ THREE.ShaderLib['water'] = {
 		'	specularColor += pow( direction, shiny ) * sunColor * spec;',
 		'	diffuseColor += max( dot( sunDirection, surfaceNormal ), 0.0 ) * sunColor * diffuse;',
 		'}',
-		
+
 		'void main()',
 		'{',
 		'	vec4 noise = getNoise( worldPosition.xz );',
@@ -85,7 +85,7 @@ THREE.ShaderLib['water'] = {
 		'	vec3 worldToEye = eye-worldPosition;',
 		'	vec3 eyeDirection = normalize( worldToEye );',
 		'	sunLight( surfaceNormal, eyeDirection, 100.0, 2.0, 0.5, diffuseLight, specularLight );',
-		
+
 		'	float distance = length(worldToEye);',
 
 		'	vec2 distortion = surfaceNormal.xz * ( 0.001 + 1.0 / distance ) * distortionScale;',
@@ -112,9 +112,9 @@ THREE.Water = function ( renderer, camera, scene, options ) {
 	};
 
 	options = options || {};
-	
+
 	this.matrixNeedsUpdate = true;
-	
+
 	var width = optionalParameter( options.textureWidth, 512 );
 	var height = optionalParameter( options.textureHeight, 512 );
 	this.clipBias = optionalParameter( options.clipBias, 0.0 );
@@ -126,7 +126,7 @@ THREE.Water = function ( renderer, camera, scene, options ) {
 	this.waterColor = new THREE.Color( optionalParameter( options.waterColor, 0x7F7F7F ) );
 	this.eye = optionalParameter( options.eye, new THREE.Vector3( 0, 0, 0 ) );
 	this.distortionScale = optionalParameter( options.distortionScale, 20.0 );
-	
+
 	this.renderer = renderer;
 	this.scene = scene;
 	this.mirrorPlane = new THREE.Plane();
@@ -136,10 +136,10 @@ THREE.Water = function ( renderer, camera, scene, options ) {
 	this.rotationMatrix = new THREE.Matrix4();
 	this.lookAtPosition = new THREE.Vector3( 0, 0, -1 );
 	this.clipPlane = new THREE.Vector4();
-	
+
 	if ( camera instanceof THREE.PerspectiveCamera )
 		this.camera = camera;
-	else 
+	else
 	{
 		this.camera = new THREE.PerspectiveCamera();
 		console.log(this.name + ': camera is not a Perspective Camera!')
@@ -148,16 +148,16 @@ THREE.Water = function ( renderer, camera, scene, options ) {
 	this.textureMatrix = new THREE.Matrix4();
 
 	this.mirrorCamera = this.camera.clone();
-	
+
 	this.texture = new THREE.WebGLRenderTarget( width, height );
 	this.tempTexture = new THREE.WebGLRenderTarget( width, height );
-	
+
 	var mirrorShader = THREE.ShaderLib[ "water" ];
 	var mirrorUniforms = THREE.UniformsUtils.clone( mirrorShader.uniforms );
 
-	this.material = new THREE.ShaderMaterial( { 
-		fragmentShader: mirrorShader.fragmentShader, 
-		vertexShader: mirrorShader.vertexShader, 
+	this.material = new THREE.ShaderMaterial( {
+		fragmentShader: mirrorShader.fragmentShader,
+		vertexShader: mirrorShader.vertexShader,
 		uniforms: mirrorUniforms,
 		transparent: true
 	} );
@@ -171,9 +171,9 @@ THREE.Water = function ( renderer, camera, scene, options ) {
 	this.material.uniforms.waterColor.value = this.waterColor;
 	this.material.uniforms.sunDirection.value = this.sunDirection;
 	this.material.uniforms.distortionScale.value = this.distortionScale;
-	
+
 	this.material.uniforms.eye.value = this.eye;
-	
+
 	if ( !THREE.Math.isPowerOfTwo(width) || !THREE.Math.isPowerOfTwo(height) )
 	{
 		this.texture.generateMipmaps = false;
@@ -262,7 +262,7 @@ THREE.Water.prototype.updateTextureMatrix = function () {
 	projectionMatrix.elements[6] = c.y;
 	projectionMatrix.elements[10] = c.z + 1.0 - this.clipBias;
 	projectionMatrix.elements[14] = c.w;
-	
+
 	var worldCoordinates = new THREE.Vector3();
 	worldCoordinates.setFromMatrixPosition( this.camera.matrixWorld );
 	this.eye = worldCoordinates;
