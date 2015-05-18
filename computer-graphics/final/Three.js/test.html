@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <div id="container"></div>
+  </body>
+
+  <script src="js/Three.js"></script>
+
+  <script type="x-shader/x-vertex" id="vertexShader">
+// Put the Vertex Shader code here
+  </script>
+
+  <script type="x-shader/x-vertex" id="fragmentShader">
+// Put the Fragment Shader code here
+  </script>
+
+  <script src="js/Three.js"></script>
+  <script src="js/Detector.js"></script>
+  <script src="js/Stats.js"></script>
+  <script src="js/OrbitControls.js"></script>
+  <script src="js/ShaderWater.js"></script>
+
+
+  <script type="application/x-glsl" id="sky-vertex">
+varying vec2 vUV;
+
+void main() {
+  vUV = uv;
+    vec4 pos = vec4(position, 1.0);
+      gl_Position = projectionMatrix * modelViewMatrix * pos;
+      }
+  </script>
+
+  <script type="application/x-glsl" id="sky-fragment">
+uniform sampler2D texture;
+varying vec2 vUV;
+
+void main() {
+  vec4 sample = texture2D(texture, vUV);
+    gl_FragColor = vec4(sample.xyz, sample.w);
+    }
+  </script>
+
+
+  <script type="text/javascript" id="mainCode">
+var container,
+    renderer,
+    scene,
+    camera,
+    clock = new THREE.Clock();
+
+window.addEventListener( 'load', function() {
+
+  // grab the container from the DOM
+
+
+  // create a scene
+  scene = new THREE.Scene();
+
+  // create a camera the size of the browser window
+  // and place it 100 units away, looking towards the center of the scene
+  var SCREEN_WIDTH = 2 * window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+  var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+  camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+  camera.position.set(100, 300, 700);
+  camera.lookAt(scene.position);
+  scene.add(camera);
+  camera.lookAt(scene.position);
+
+
+//   if ( Detector.webgl )
+//   renderer = new THREE.WebGLRenderer( {antialias:true} );
+// else
+  renderer = new THREE.CanvasRenderer();
+renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+container = document.getElementById( "container" );
+// // container = document.getElementById( 'ThreeJS' );
+container.appendChild( renderer.domElement );
+
+controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+  stats = new Stats();
+  	stats.domElement.style.position = 'absolute';
+  	stats.domElement.style.bottom = '0px';
+  	stats.domElement.style.zIndex = 100;
+  	container.appendChild( stats.domElement );
+
+
+    var light = new THREE.PointLight(0xffffff);
+    	light.position.set(100,250,100);
+    	scene.add(light);
+
+  //skybox
+  var geometry = new THREE.SphereGeometry(3000, 60, 40);
+  var uniforms = {
+      texture: { type: 't', value: THREE.ImageUtils.loadTexture('images/DarkSea-zpos.jpg') }
+  };
+
+  var material = new THREE.ShaderMaterial( {
+      uniforms:       uniforms,
+        vertexShader:   document.getElementById('sky-vertex').textContent,
+          fragmentShader: document.getElementById('sky-fragment').textContent
+  });
+
+  skyBox = new THREE.Mesh(geometry, material);
+  skyBox.scale.set(-1, 1, 1);
+  skyBox.eulerOrder = 'XZY';
+  skyBox.renderDepth = 1000.0;
+  scene.add(skyBox);
+
+  var geometry = new THREE.SphereGeometry( 100, 32, 16 );
+	// var material = new THREE.MeshLambertMaterial( { color: 0x000088 } );
+	var material = new THREE.MeshNormalMaterial();
+	mesh = new THREE.Mesh( geometry, material );
+	mesh.position.set(0,40,0);
+	// scene.add(mesh);
+
+	var noiseTexture = new THREE.ImageUtils.loadTexture( 'images/cloud.png' );
+	noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
+
+	// MIRORR plane
+	verticalMirror = new THREE.FlatMirror(renderer, camera, {
+		clipBias: 0.003,
+		textureWidth: 800, textureHeight: 600,
+
+		baseTexture: THREE.ImageUtils.loadTexture("images/water.jpg"),
+		baseSpeed: 0.1,
+		noiseTexture: noiseTexture,
+		noiseScale: 8.0,
+		// alpha: 	0.8,
+		time: 	0.0,
+	});
+
+    this.verticalMirrorMesh = new THREE.Mesh(
+		new THREE.PlaneGeometry(3000, 3000, 100, 100),
+		verticalMirror.material
+	);
+  verticalMirrorMesh.position.set(0,10,0);
+	verticalMirrorMesh.add(verticalMirror);
+	// verticalMirror.material.side = THREE.DoubleSide;
+	// verticalMirrorMesh.position.set(1000, 750, -100);
+  var joint = new THREE.Mesh();
+  verticalMirrorMesh.rotation.x = - Math.PI * 0.5;
+  verticalMirrorMesh.add(joint);
+  joint.add(mesh);
+  scene.add(verticalMirrorMesh);
+
+  // create the renderer and attach it to the DOM
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+  container.appendChild( renderer.domElement );
+
+  render();
+  update();
+
+} );
+
+function update()
+{
+
+	var delta = clock.getDelta();
+	verticalMirror.material.uniforms.time.value += delta;
+
+	controls.update();
+	// stats.update();
+}
+
+function render() {
+  var time = performance.now() * 0.001;
+  // let there be light
+  renderer.render( scene, camera );
+  requestAnimationFrame( render );
+
+}
+  </script>
+
+</html>
