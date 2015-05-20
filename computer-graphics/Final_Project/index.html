@@ -118,14 +118,33 @@ scene.add(skyBox);
 
 	var noiseTexture = new THREE.ImageUtils.loadTexture( 'images/cloud.png' );
 	noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
-  var waterTexture = new THREE.ImageUtils.loadTexture( 'images/water_3.jpg' );
+  var waterTexture = new THREE.ImageUtils.loadTexture( 'images/water_4.jpg' );
   waterTexture.wrapS = waterTexture.wrapT = THREE.RepeatWrapping;
+
+
+//water reflection (doesn't work)
+  // var mCubeCamera = new THREE.CubeCamera(0.1, 1000, 1000);
+  // scene.add(mCubeCamera);
+  // var mirrorMaterial = new THREE.MeshBasicMaterial(
+  //   {
+  //     envMap: mCubeCamera.renderTarget, side: THREE.DoubleSide
+  //   }
+  // );
+  // var mPlane = new THREE.Mesh (
+  //   new THREE.PlaneGeometry(5000, 5000, 200, 100),
+  //    mirrorMaterial);
+  //
+  // mPlane.position.set(0,10,0);
+  // mPlane.rotation.x = - Math.PI * 0.5;
+
+
+
 
   this.customUniforms = {
       baseTexture: 	{ type: "t", value: waterTexture },
       baseSpeed: 		{ type: "f", value: 0.05 },
       noiseTexture: 	{ type: "t", value: noiseTexture },
-      noiseScale:		{ type: "f", value: 0.1 },
+      noiseScale:		{ type: "f", value: 2.0 },
       alpha: 			{ type: "f", value: 1.0 },
       time: 			{ type: "f", value: 1.0 }
     };
@@ -145,6 +164,7 @@ scene.add(skyBox);
   waterMesh.position.set(0,10,0);
   waterMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(waterMesh);
+  // waterMesh.add(mPlane);
 
 // boat
   var manager = new THREE.LoadingManager();
