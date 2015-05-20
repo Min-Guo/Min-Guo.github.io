@@ -63,7 +63,7 @@ void main() {
 
 
 <script>
-var container, scene, camera, renderer, stats, boat;
+var container, scene, camera, renderer, stats, boat, crane;
 var clock = new THREE.Clock();
 
 var mesh;
@@ -264,7 +264,7 @@ scene.add(skyBox);
     iObject.position.y = 50;
     iObject.position.z =-1500;
 
-    iObject.scale.set(2, 2, 2);
+    iObject.scale.set(3, 3, 3);
     // boat = object;
     scene.add( iObject );
 
@@ -281,22 +281,20 @@ function animate()
 	update();
 }
 
-// function update()
-// {
-// 	var delta = clock.getDelta();
-// 	// water.material.uniforms.time.value += delta;
-//
-// 	// controls.update();
-// 	// stats.update();
-// }
+function update()
+{
+
+}
 
 function render()
 {
   var time = performance.now() * 0.001;
   customUniforms.time.value += 1.0 / 60.0;
   // console.log(scene)
-  boat.position.x = time * 20
+  boat.position.x = time * 15
+  boat.position.z = time * 15
   boat.position.y = 3 * Math.sin(time* 4) + 40;
+
   renderer.render( scene, camera );
 }
 
