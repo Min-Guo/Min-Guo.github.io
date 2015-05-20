@@ -11,10 +11,35 @@
 <script src="versions/three.min.js"></script>
 <!-- <script src="js/Three.js"></script> -->
 <script src="js/Detector.js"></script>
-<script src="js/OrbitControls.js"></script>
-<script src="js/ShaderWater.js"></script>
 <script src="js/OBJLoader.js"></script>
 
+<script id="water-vertexShader" type="x-shader/x-vertex">
+varying vec2 vUv;
+void main()
+{
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}
+</script>
+
+<script id="water-fragmentShader" type="x-shader/x-vertex">
+uniform sampler2D baseTexture;
+uniform float baseSpeed;
+uniform sampler2D noiseTexture;
+uniform float noiseScale;
+uniform float alpha;
+uniform float time;
+varying vec2 vUv;
+void main()
+{
+  vec2 uvTimeShift = vUv + vec2( -0.7, 1.5 ) * time * baseSpeed;
+  vec4 noiseGeneratorTimeShift = texture2D( noiseTexture, uvTimeShift );
+  vec2 uvNoiseTimeShift = vUv + noiseScale * vec2( noiseGeneratorTimeShift.r, noiseGeneratorTimeShift.b );
+  vec4 baseColor = texture2D( baseTexture, uvNoiseTimeShift );
+  baseColor.a = alpha;
+  gl_FragColor = baseColor;
+}
+</script>
 
 <script type="application/x-glsl" id="sky-vertex">
 varying vec2 vUV;
@@ -38,19 +63,11 @@ void main() {
 
 
 <script>
-var container, scene, camera, renderer, controls, stats, boat;
+var container, scene, camera, renderer, stats, boat;
 var clock = new THREE.Clock();
 
 var mesh;
-var parameters = {
-	width: 2000,
-	height: 2000,
-	widthSegments: 250,
-	heightSegments: 250,
-	depth: 1500,
-	param: 4,
-	filterparam: 1
-}
+
 init();
 animate();
 
@@ -73,15 +90,12 @@ function init()
 	else
 		renderer = new THREE.CanvasRenderer();
 	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  // renderer.setPixelRatio( window.devicePixelRatio );
-  // renderer.setSize( window.innerWidth, window.innerHeight );
 	container = document.getElementById( 'ThreeJS' );
 	container.appendChild( renderer.domElement );
-  controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 
 	var light = new THREE.PointLight(0xffffff);
-	light.position.set(500,250,100);
+	light.position.set(-200, 0, 1000);
 	scene.add(light);
 	// Sphere-SKYBOX
   var skyGeometry = new THREE.SphereGeometry(3000, 60, 40);
@@ -101,51 +115,34 @@ skyBox.eulerOrder = 'XZY';
 skyBox.renderDepth = 500.0;
 scene.add(skyBox);
 
-  // var uniforms = {
-  //   type: 't', value: THREE.ImageUtils.loadTexture('images/DarkSea-zpos.jpg') };
-  //   var skyBoxMaterial = new THREE.ShaderMaterial({
-  //       uniforms :uniforms,
-  //       vertexShader: document.getElementById('sky-vertex').textContent,
-  //       fragmentShader: document.getElementById('sky-fragment').textContent
-  //   });
-  //   var skyBoxGeometry = new THREE.SphereGeometry( 500, 50, 50 );
-  //   var skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
-  //   skyBox.scale.set(-1, 1, 1);
-  //   skyBox.eulerOrder = 'XYZ';
-  //   skyBox.renderDepth = 500.0;
-  //   scene.add(skyBox);
-
-
-	// var geometry = new THREE.SphereGeometry( 200, 32, 16 );
-	// // var material = new THREE.MeshLambertMaterial( { color: 0x000088 } );
-	// var material = new THREE.MeshNormalMaterial();
-	// mesh = new THREE.Mesh( geometry, material );
-	// mesh.position.set(0,40,0);
-	// scene.add(mesh);
 
 	var noiseTexture = new THREE.ImageUtils.loadTexture( 'images/cloud.png' );
 	noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
+  var waterTexture = new THREE.ImageUtils.loadTexture( 'images/water_3.jpg' );
+  waterTexture.wrapS = waterTexture.wrapT = THREE.RepeatWrapping;
 
+  this.customUniforms = {
+      baseTexture: 	{ type: "t", value: waterTexture },
+      baseSpeed: 		{ type: "f", value: 0.05 },
+      noiseTexture: 	{ type: "t", value: noiseTexture },
+      noiseScale:		{ type: "f", value: 0.1 },
+      alpha: 			{ type: "f", value: 1.0 },
+      time: 			{ type: "f", value: 1.0 }
+    };
 
-	water = new THREE.FlatMirror(renderer, camera, {
-		clipBias: 0.003,
-		textureWidth: 800, textureHeight: 600,
+    var customMaterial = new THREE.ShaderMaterial(
+      {
+      uniforms: customUniforms,
+      vertexShader:   document.getElementById( 'water-vertexShader'   ).textContent,
+      fragmentShader: document.getElementById( 'water-fragmentShader' ).textContent
+      }   );
 
-		baseTexture: THREE.ImageUtils.loadTexture("images/water.jpg"),
-		baseSpeed: 0.1,
-		noiseTexture: noiseTexture,
-		noiseScale: 4.0,
-		// alpha: 	0.8,
-		time: 	0.0,
-	});
 
     this.waterMesh = new THREE.Mesh(
 		new THREE.PlaneGeometry(5000, 5000, 200, 100),
-		water.material
+		customMaterial
 	);
   waterMesh.position.set(0,10,0);
-	waterMesh.add(water);
-	waterMesh.position.set(0, -100, 0);
   waterMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(waterMesh);
 
@@ -171,14 +168,12 @@ scene.add(skyBox);
 
 
   var loader = new THREE.ImageLoader( manager );
-  loader.load( 'OBJ/boat/boat_white.jpg', function ( image ) {
+  loader.load( 'OBJ/boat/boat_wood.jpg', function ( image ) {
 
     texture.image = image;
     texture.needsUpdate = true;
 
   } );
-
-  // model
 
   var loader = new THREE.OBJLoader( manager );
   loader.load(  'OBJ/boat/boat.obj', function ( object ) {
@@ -194,7 +189,7 @@ scene.add(skyBox);
     } );
 
     object.position.x = -200;
-    object.position.y = 1000;
+    object.position.y = 1200;
     object.position.z = 300;
 
     object.scale.set(50, 50, 50);
@@ -232,8 +227,6 @@ scene.add(skyBox);
 
   } );
 
-  // model
-
   var iLoader = new THREE.OBJLoader( iManager );
   iLoader.load(  'OBJ/island2/Small Tropical Island/Small Tropical Island.obj', function ( iObject ) {
 
@@ -259,31 +252,31 @@ scene.add(skyBox);
 
   }
 
-//island
 
 function animate()
 {
     requestAnimationFrame( animate );
-	water.render();
+	// water.render();
 	render();
 	update();
 }
 
-function update()
-{
-	var delta = clock.getDelta();
-	water.material.uniforms.time.value += delta;
-
-	controls.update();
-	// stats.update();
-}
+// function update()
+// {
+// 	var delta = clock.getDelta();
+// 	// water.material.uniforms.time.value += delta;
+//
+// 	// controls.update();
+// 	// stats.update();
+// }
 
 function render()
 {
   var time = performance.now() * 0.001;
+  customUniforms.time.value += 1.0 / 60.0;
   // console.log(scene)
   boat.position.x = time * 20
-  boat.position.y = Math.sin(time*3) ;
+  boat.position.y = 3 * Math.sin(time* 4) + 40;
   renderer.render( scene, camera );
 }
 
