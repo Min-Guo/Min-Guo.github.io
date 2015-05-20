@@ -281,7 +281,7 @@ function update()
 function render()
 {
   var time = performance.now() * 0.001;
-  console.log(scene)
+  // console.log(scene)
   boat.position.x = time * 20
   boat.position.y = Math.sin(time*3) ;
   renderer.render( scene, camera );
