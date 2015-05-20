@@ -224,7 +224,7 @@ scene.add(skyBox);
   };
 
 
-  var iLoader = new THREE.ImageLoader( manager );
+  var iLoader = new THREE.ImageLoader( iManager );
   iLoader.load( 'textures/arl1b.jpg', function ( image ) {
 
     iTexture.image = image;
@@ -234,7 +234,7 @@ scene.add(skyBox);
 
   // model
 
-  var iLoader = new THREE.OBJLoader( manager );
+  var iLoader = new THREE.OBJLoader( iManager );
   iLoader.load(  'OBJ/island2/Small Tropical Island/Small Tropical Island.obj', function ( iObject ) {
 
     iObject.traverse( function ( child ) {
