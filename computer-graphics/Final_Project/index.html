@@ -38,7 +38,7 @@ void main() {
 
 
 <script>
-var container, scene, camera, renderer, controls, stats;
+var container, scene, camera, renderer, controls, stats, boat;
 var clock = new THREE.Clock();
 
 var mesh;
@@ -134,7 +134,7 @@ scene.add(skyBox);
 		baseTexture: THREE.ImageUtils.loadTexture("images/water.jpg"),
 		baseSpeed: 0.1,
 		noiseTexture: noiseTexture,
-		noiseScale: 8.0,
+		noiseScale: 4.0,
 		// alpha: 	0.8,
 		time: 	0.0,
 	});
@@ -149,7 +149,7 @@ scene.add(skyBox);
   waterMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(waterMesh);
 
-
+// boat
   var manager = new THREE.LoadingManager();
   manager.onProgress = function ( item, loaded, total ) {
 
@@ -171,7 +171,7 @@ scene.add(skyBox);
 
 
   var loader = new THREE.ImageLoader( manager );
-  loader.load( 'textures/arl1b.jpg', function ( image ) {
+  loader.load( 'OBJ/Blackjack/flechtwerk_512.jpg', function ( image ) {
 
     texture.image = image;
     texture.needsUpdate = true;
@@ -181,7 +181,7 @@ scene.add(skyBox);
   // model
 
   var loader = new THREE.OBJLoader( manager );
-  loader.load(  'OBJ/island2/Small Tropical Island/Small Tropical Island.obj', function ( object ) {
+  loader.load(  'OBJ/Blackjack/Blackjack.obj', function ( object ) {
 
     object.traverse( function ( child ) {
 
@@ -192,18 +192,74 @@ scene.add(skyBox);
       }
 
     } );
-    var randomTime = (new Date()).getTime();;
-    object.position.x = 200;
-    object.position.y = 20;
-    object.position.z =-100;
 
-    // object.scale.set(20, 20, 20);
+    object.position.x = -200;
+    object.position.y = 1000;
+    object.position.z = 300;
 
+    object.scale.set(50, 50, 50);
+    boat = object;
     scene.add( object );
 
   }, onProgress, onError );
 
-}
+//island
+  var iManager = new THREE.LoadingManager();
+  iManager.onProgress = function ( item, loaded, total ) {
+
+    console.log( item, loaded, total );
+
+  };
+
+  var iTexture = new THREE.Texture();
+
+  var onProgress = function ( xhr ) {
+    if ( xhr.lengthComputable ) {
+      var percentComplete = xhr.loaded / xhr.total * 100;
+      console.log( Math.round(percentComplete, 2) + '% downloaded' );
+    }
+  };
+
+  var onError = function ( xhr ) {
+  };
+
+
+  var iLoader = new THREE.ImageLoader( manager );
+  iLoader.load( 'textures/arl1b.jpg', function ( image ) {
+
+    iTexture.image = image;
+    iTexture.needsUpdate = true;
+
+  } );
+
+  // model
+
+  var iLoader = new THREE.OBJLoader( manager );
+  iLoader.load(  'OBJ/island2/Small Tropical Island/Small Tropical Island.obj', function ( iObject ) {
+
+    iObject.traverse( function ( child ) {
+
+      if ( child instanceof THREE.Mesh ) {
+
+        child.material.map = texture;
+
+      }
+
+    } );
+
+    iObject.position.x = -1000;
+    iObject.position.y = 50;
+    iObject.position.z =-1500;
+
+    iObject.scale.set(2, 2, 2);
+    // boat = object;
+    scene.add( iObject );
+
+  }, onProgress, onError );
+
+  }
+
+//island
 
 function animate()
 {
@@ -225,7 +281,9 @@ function update()
 function render()
 {
   var time = performance.now() * 0.001;
-  // loader.position.z = Math.sin( time ) * 20 + 20  ;
+  console.log(scene)
+  boat.position.x = time * 20
+  boat.position.y = Math.sin(time*3) ;
   renderer.render( scene, camera );
 }
 
