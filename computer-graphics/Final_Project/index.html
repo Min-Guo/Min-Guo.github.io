@@ -265,7 +265,6 @@ scene.add(skyBox);
     iObject.position.z =-1500;
 
     iObject.scale.set(3, 3, 3);
-    // boat = object;
     scene.add( iObject );
 
   }, onProgress, onError );
@@ -276,23 +275,22 @@ scene.add(skyBox);
 function animate()
 {
     requestAnimationFrame( animate );
-	// water.render();
 	render();
-	update();
+	// update();
 }
 
-function update()
-{
-
-}
+// function update()
+// {
+//
+// }
 
 function render()
 {
   var time = performance.now() * 0.001;
   customUniforms.time.value += 1.0 / 60.0;
   // console.log(scene)
-  boat.position.x = time * 15
-  boat.position.z = time * 15
+  boat.position.x = time * 10
+  boat.position.z = time * 10
   boat.position.y = 3 * Math.sin(time* 4) + 40;
 
   renderer.render( scene, camera );
