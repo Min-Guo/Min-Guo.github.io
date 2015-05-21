@@ -116,6 +116,7 @@ skyBox.renderDepth = 500.0;
 scene.add(skyBox);
 
 
+
 	var noiseTexture = new THREE.ImageUtils.loadTexture( 'images/cloud.png' );
 	noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
   var waterTexture = new THREE.ImageUtils.loadTexture( 'images/water_4.jpg' );
@@ -137,7 +138,8 @@ scene.add(skyBox);
   // mPlane.position.set(0,10,0);
   // mPlane.rotation.x = - Math.PI * 0.5;
 
-
+  // var bCamera = new THREE.CubeCamera(0.1, 1000, 1000);
+  // scene.add(bCamera);
 
 
   this.customUniforms = {
@@ -164,6 +166,7 @@ scene.add(skyBox);
   waterMesh.position.set(0,10,0);
   waterMesh.rotation.x = - Math.PI * 0.5;
 	scene.add(waterMesh);
+  // bCamera.position = waterMesh.position;
   // waterMesh.add(mPlane);
 
 // boat
@@ -292,7 +295,6 @@ function render()
   boat.position.x = time * 10
   boat.position.z = time * 10
   boat.position.y = 3 * Math.sin(time* 4) + 40;
-
   renderer.render( scene, camera );
 }
 
